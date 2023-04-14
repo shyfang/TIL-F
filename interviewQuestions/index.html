@@ -1,0 +1,64 @@
+<!-- 内联元素居中布局 -->
+<!-- 块级元素居中布局 -->
+
+
+<!-- 元素定位 + margin负值 -->
+<!-- 元素定位 + translate -->
+<style>
+  .father {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background: skyblue;
+  }
+  .son {
+    position: absolute;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    /* margin负值的代替方案，translate(-50%, -50%)将会将元素位移自己宽度和高度的-50%, 不知道子元素宽高也可用 */
+    /* margin-left:-50px;
+        margin-top:-50px; */
+
+    /* left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto; */
+
+    width: 100px;
+    height: 100px;
+    background: red;
+  }
+</style>
+<div class="father">
+  <div class="son"></div>
+</div>
+
+<!-- flex布局 -->
+<style>
+  .father {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    background: skyblue;
+  }
+  .son {
+    width: 100px;
+    height: 100px;
+    background: red;
+  }
+</style>
+<div class="father">
+  <div class="son"></div>
+</div>
+
+<!-- 不知道元素宽高依然可用的水平垂直居中方法 -->
+<!-- 
+  利用定位+margin:auto
+  利用定位+transform
+  flex布局
+  grid布局
+# -->

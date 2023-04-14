@@ -1,0 +1,120 @@
+// mix-in class selector, id sselector
+.a,
+#b {
+  color: red;
+}
+.mixin-class {
+  .a();
+}
+.mixin-id {
+  #b();
+}
+
+// mixins with parentheses (will not to be in your css output)
+.my-mixin {
+  color: black;
+}
+.my-other-mixin() {
+  background: white;
+}
+.class {
+  .my-mixin();
+  .my-other-mixin();
+}
+// output
+// .my-mixin {
+//   color: black;
+// }
+// .class {
+//   color: black;
+//   background: white;
+// }
+
+// selectors in mixins(contain properties / selectors)
+.my-hover-mixin() {
+  &:hover {
+    border: 1px solid red;
+  }
+}
+button {
+  .my-hover-mixin();
+}
+
+// namespaces
+#outer() {
+  .inner {
+    color: red;
+  }
+}
+
+.c {
+  #outer.inner();
+}
+
+// guarded namespaces
+#namespace when (@mode = huge) {
+  .mixin() {
+    /* */
+  }
+}
+
+#namespace {
+  .mixin() when (@mode = huge) {
+    /* */
+  }
+}
+
+// !important
+.foo (@bg: #f5f5f5; @color: #900) {
+  background: @bg;
+  color: @color;
+}
+.unimportant {
+  .foo();
+}
+.important {
+  .foo() !important;
+}
+
+// .unimportant {
+//   background: #f5f5f5;
+//   color: #900;
+// }
+// .important {
+//   background: #f5f5f5 !important;
+//   color: #900 !important;
+// }
+
+// pass arguments to mixins
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+// default valuess
+.border-radius(@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+
+// parameter separators
+
+//  Recursive mixins
+// generic example of using a rescursive loop to generate css grid classes
+.generate-column(@n, @i:1) when (@i < @n) {
+  .column-@{i} {
+    width: (100% / @n * @i);
+  }
+  .generate-columns(@n, (@i + 1));
+}
+
+
+//  less和scss
+// 1. less使用@定义变量，scss用$
+// 2. less 使用when 替代 scss的@if
+// 3. less 数学运算符需要用()
+// 4. less 使用percentage()函数计算百分比
+// 5. .class(@param) 来定义mixin中的局部变量
+
