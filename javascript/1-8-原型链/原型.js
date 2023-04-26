@@ -1,4 +1,4 @@
-//【原型】 [[prototype]]:在 JavaScript 中，所有的对象都有一个隐藏的 [[Prototype]] 属性，它要么是另一个对象，要么就是 null。
+//【原型】 [[prototype]]:在 JavaScript 中，所有的对象Object都有一个隐藏的 [[Prototype]] 属性，它要么是另一个对象，要么就是 null，该对象被称为原型。
 
 let animal = {
   eats: true,
@@ -6,14 +6,36 @@ let animal = {
 let rabbit = {
   jumps: true,
 }
-rabbit.__proto__ = animal //已过时 rabbit.[[prototype]] = animal 1. __proto__的值是对象或null 2.只能有一个[[prototype]]
-// __proto__ 是 [[Prototype]] 的 getter/setter
+rabbit.__proto__ = animal 
+// 设置方式:
+//已过时 rabbit.[[prototype]] = animal 1. __proto__的值是对象或null 2.只能有一个[[prototype]]
+//已过时 __proto__ 是 [[Prototype]] 的 getter/setter
 // Object.getPrototypeOf
 // Object.setPrototypeOf
 // 从 rabbit 中读取一个它没有的属性，JavaScript 会自动从 animal 中获取
-// 继承："animal 是 rabbit 的原型"，或者说 "rabbit 的原型是从 animal 继承而来的"
 
+// 【继承】:"animal 是 rabbit 的原型"，或者说 "rabbit 的原型是从 animal 继承而来的"
 // 继承链：rabbit 从 animal 中继承，animal 从 Object.prototype 中继承（因为 animal 是对象字面量 {...}，所以这是默认的继承），然后再向上是 null
+
+let user = {
+  name: "John",
+  surname: "Smith",
+
+  set fullName(value) {
+    [this.name, this.surname] = value.split(" ");
+  },
+
+  get fullName() {
+    // console.log('this', this, 'this.name',this.name, 'this.surname',this.surname);
+    return `${this.name} ${this.surname}`;
+  }
+};
+
+let admin = {
+  __proto__: user,
+  isAdmin: true
+};
+console.log("admin.fullName", admin.fullName);
 
 
 /**
@@ -84,33 +106,26 @@ for (let prop in rabbit3) {
 // 几乎所有其他键/值获取方法，例如 Object.keys 和 Object.values 等，都会【忽略继承的属性】。
 // 它们只会对对象自身进行操作。不考虑 继承自原型的属性。
 
-
-// F.prototype
+// -----------------------------------------------F.prototype-------------------------------------------------------------------
 // F.prototype 属性:仅在 new F 被调用时使用，它为新对象(实例)的 [[Prototype]] 赋值。
 // 通常情况下 F.prototype = { contructor: F} -> 图表述
 
+// F.prototype 属性有了变化（F.prototype = <another object>），那么通过 new F 创建的新对象也将随之拥有新的对象作为 [[Prototype]]，但已经存在的对象将保持【旧】有的值。
 function Rabbit() {}
 Rabbit.prototype = {
   eats: true,
 }
-
 let rabbit1 = new Rabbit() // 引用了上面的prototype
-
 Rabbit.prototype = {
   eats: false,
 }
-
 let rabbit2 = new Rabbit() // 引用了新定义的的prototype
-
 delete Rabbit.prototype.eats // 删除新定义的prototype的eats
-
 console.log(rabbit1.eats) // 从之前引用的prototype取值 true
-
 console.log(rabbit2.eats) // 从新的prototype取值 undefined
 
-// Object.prototype
-let obj = {}
-
+// -----------------------------------------------Object.prototype-------------------------------------------------------------------
+let obj = {} // let obj = new Object() // 二者等同，Object是内建的对象构造函数
 console.log(obj.__proto__ === Object.prototype) // true
 
 console.log(obj.toString === obj.__proto__.toString) //true
@@ -118,8 +133,10 @@ console.log(obj.toString === Object.prototype.toString) //true
 
 console.log(Object.prototype.__proto__ === null)
 
-// 其他内建原型Arrary Date Function 都在prototype上挂载了方法
+// 其他内建原型Arrary Date Function 都在prototype上挂载了方法,https://zh.javascript.info/article/native-prototypes/native-prototypes-classes.svg
 // 内建原型顶端是Object.prototy 一切都从对象继承而来
+// 1. 方法都存储在 prototype 中（Array.prototype、Object.prototype、Date.prototype 等）。
+// 2. 对象本身只存储数据（数组元素、对象属性、日期）。
 let arr = [1, 2, 3]
 
 // 它继承自 Array.prototype？
@@ -130,6 +147,11 @@ let arr = [1, 2, 3]
 
 // 原型链的顶端为 null。
 // alert( arr.__proto__.__proto__.__proto__ ); // null
+
+
+// -----------------------------------------------从原型中借用-------------------------------------------------------------------
+// 从一个对象获取一个方法，并将其复制到另一个对象
+// [].join.call()
 
 // toString
 
