@@ -14,6 +14,38 @@ function getType(obj){
 // Genetator
 
 /** 防抖 节流 */
+function debounce(fn, time){
+  let timer = null;
+
+  // 频繁触发时，计时器重新计时
+  return function debounceHandler(){
+      let context = this,args = arguments;
+      if(timer != null){
+          clearTimeout(timer)
+      }
+      timer = setTimeout(()=>{
+          fn.apply(this, args)
+          timer = null;
+      },time)
+  }
+}
+
+function throttle(fn, time = 300) {
+  let timer = null;
+
+  // 这里不用箭头函数的原因是为了能够使用调用这个函数的对象的this上下文
+  return function throttleHandler(...args) {
+      if (timer === null) {
+          // 这里不用 fn(...args)的原因还是为了保证this，因为 fn(...args) 会被编译成 fn.apply(undefined, args);
+          fn.apply(this, args);
+          timer = setTimeout(() => {
+              timer = null;
+          }, time);
+      }
+  };
+}
+
+
 
 /** 比较 */
 function compare(value1, value2) {
@@ -145,5 +177,4 @@ export { firstName as Name }
 
 /** 判断数据类型 封装方法 */
 
-
-
+/** 下载文件方法 */
