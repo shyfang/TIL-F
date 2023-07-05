@@ -1,10 +1,11 @@
-function getType(obj){
+export function getType(obj){
   let type  = typeof obj;
   if (type !== "object") {    // 先进行typeof判断，如果是基础数据类型，直接返回
     return type;
   }
   // 对于typeof返回结果是object的，再进行如下的判断，正则返回结果
   return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, '$1'); 
+  // return Object.prototype.toString.call(obj).slice(8, -1); 
 }
 
 // Promise
@@ -14,7 +15,9 @@ function getType(obj){
 // Genetator
 
 /** 防抖 节流 */
-function debounce(fn, time){
+// 防抖：防止抖动，单位时间内事件触发会被重置，避免事件被误触发多次
+// 重在清零 clearTimeout,【频繁触发时，计时器重新计时】比如等电梯，只要有一个人进来，就需要再等一会儿
+export function debounce(fn, time){
   let timer = null;
 
   // 频繁触发时，计时器重新计时
@@ -30,7 +33,22 @@ function debounce(fn, time){
   }
 }
 
-function throttle(fn, time = 300) {
+function debounce1(fn, wait) {
+  let timer =  null
+  return function debounceHandler() {
+    if(timer) {
+      clearTimeout(timer)
+    }
+    if(!timer) {
+      timer = setTimeout(() => {
+        fn.apply()
+        timer = null
+      }, time);
+    }
+  }
+}
+
+export function throttle(fn, time = 300) {
   let timer = null;
 
   // 这里不用箭头函数的原因是为了能够使用调用这个函数的对象的this上下文
@@ -48,7 +66,7 @@ function throttle(fn, time = 300) {
 
 
 /** 比较 */
-function compare(value1, value2) {
+export function compare(value1, value2) {
   if (value1 < value2) {
       return -1;
   } else if (value1 > value2) {
@@ -109,7 +127,7 @@ const Clipboard = (text) => {
     copy: copyToClipboard,
   }
 }
-const handleCopy = () => {
+export const handleCopy = () => {
   const { copy } = Clipboard('value')
   copy().then((res) => {
     if (res) {
@@ -128,7 +146,7 @@ const handleCopy = () => {
 // async/await
 let myObj = { foo: 3, bar: 7 };
 
-function* iterEntries(obj) {
+export function* iterEntries(obj) {
   let keys = Object.keys(obj);
   for (let i=0; i < keys.length; i++) {
     let key = keys[i];
@@ -178,3 +196,38 @@ export { firstName as Name }
 /** 判断数据类型 封装方法 */
 
 /** 下载文件方法 */
+
+
+/** querystring */
+// const url = "https://shanyue.tech?a=3&b=4&c=5";
+function parseQueryString(url) {
+  const queryString = url.split('?')[1];
+  const params = new URLSearchParams(queryString);
+  const result = {};
+
+  for (const [key, value] of params) {
+    if (result[key]) {
+      if (Array.isArray(result[key])) {
+        result[key].push(value);
+      } else {
+        result[key] = [result[key], value];
+      }
+    } else {
+      result[key] = value;
+    }
+  }
+
+  return result;
+}
+
+
+function parseUrl(url) {
+  const reg = /([^?&#]+)=([^?&#]+)/g;
+  return url.match(reg).reduce((pre, cur) => {
+      const [key, value] = cur.split(/=/);
+      return {
+          ...pre,
+          [key]: value,
+      };
+  }, {});
+}

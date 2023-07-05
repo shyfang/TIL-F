@@ -41,7 +41,7 @@
 - javascript ES6
 
 1. JavaScript 数据类型有哪些？
-   基本类型：Number String Boolean Undefined null symbol
+   基本类型：Number String Boolean Undefined null symbol BigInt
    引用类型：Object Array Function 其他：Map Set Date Regexp
 
    实现一个判断数据类型的方法？

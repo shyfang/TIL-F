@@ -1,4 +1,4 @@
-// 函数会调用 自身 ——> 递归
+// 函数会调用自身(自调用) ——> 递归
 // 递归：1.有边界条件、递归前进阶段、递归返回阶段
 // 边界条件不满足前进，边界条件满足 递归返回
 function pow(x, n) {
@@ -75,10 +75,23 @@ function sumArr1(arr, total) {
   }
 }
 
+// array.reduce():对数组中的每个元素按序执行一个提供的 reducer 函数，每一次运行 reducer 会将先前元素的计算结果作为参数传入，最后将其结果汇总为单个返回值
 function sumArr(arr) {
-  // reduce参数
-  arr.reduce((sum, current) => sum + current, 0)
-  return arr
+  // reduce参数 reduce(callbackFn) // reduce(callbackFn, initialValue)
+  const initialValue = 0
+  return arr.reduce((sum, current) => sum + current, initialValue)
+}
+
+function sumSalaries(department){
+  if(Array.isArray(department)) {
+    return department.reduce((prev, current) => prev + current.salary, 0)
+  } else {
+    let sum = 0
+    for (const value of Object.values(department)) {
+      sum += sumSalaries(value)
+    }
+    return sum
+  }
 }
 
 // 斐波那契数列 递归 和 尾递归

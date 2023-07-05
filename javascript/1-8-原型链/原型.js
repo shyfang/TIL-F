@@ -87,7 +87,7 @@ for (let prop in rabbit3) {
 }
 
 for (let prop in rabbit3) {
-  let isOwn = rabbit3.hasOwnProperty(prop) // [true:自己的（非继承的）名为 key 的属性]:过滤掉继承的属性
+  let isOwn = rabbit3.hasOwnProperty(prop) // [true:自己的（非继承的）名为 prop 的属性]:过滤掉继承的属性
 
   if (isOwn) {
     console.log(`Our: ${prop}`) // Our: jumps
@@ -108,7 +108,16 @@ for (let prop in rabbit3) {
 
 // -----------------------------------------------F.prototype-------------------------------------------------------------------
 // F.prototype 属性:仅在 new F 被调用时使用，它为新对象(实例)的 [[Prototype]] 赋值。
-// 通常情况下 F.prototype = { contructor: F} -> 图表述
+// 通常情况下 F.prototype = { contructor: F} 
+
+//          prototype
+// Rabbit  ————————————> animal
+//                        ^
+//                        ｜
+//                        ｜[[Prototype]]
+//                        ｜
+//                        rabblit
+
 
 // F.prototype 属性有了变化（F.prototype = <another object>），那么通过 new F 创建的新对象也将随之拥有新的对象作为 [[Prototype]]，但已经存在的对象将保持【旧】有的值。
 function Rabbit() {}
@@ -164,6 +173,7 @@ Function.prototype.defer = function(ms){
 }
 
 
+// -----------------------------------------------设置原型-------------------------------------------------------------------
 // Object.getPrototypeOf
 // Object.setPrototypeOf
 
@@ -184,12 +194,28 @@ console.log('obj1', Object.getOwnPropertyDescriptors(obj1),);
 console.log(clone)
 
 
-// 原型简史
+// -----------------------------------------------原型简史-------------------------------------------------------------------
 // 构造函数的prototype属性
 // 2012 Object.create //使用给定原型创建对象，但没提供set/get
 // 2015 Object.setPrototypeOf Object.getPrototypeOf 与__proto__
 // 2022 对象字面量{...} 中使用 __proto__,不能用作 getter/setter obj.__proto__
 
-// ？why？__proto__,不能用作 getter/setter obj.__proto__
+// ？why？__proto__,不能用作 getter/setter obj.__proto__ // 容易无意更改原型
+// __proto__ 不是对象的属性，而是 Object.prototype 的访问器属性： get __proto__: function     set __proto__: function
+
+// -----------------------------------------------没有原型-------------------------------------------------------------------
+// Object.create(null) 创建了一个空对象，这个对象没有原型（[[Prototype]] 是 null）：
+
+
+// -----------------------------------------------总结-------------------------------------------------------------------
+// 使用给定原型创建对象
+  // 1. Object.create()
+  // 2. 字面量法
+// 访问原型属性
+
+// 创建无原型对象，这些对象被用作字典，以存储任意（可能是用户生成的）键。
+
+// 原型为null
+// 对象会从 Object.prototype 继承内建的方法和 __proto__ getter/setter，会占用相应的键，且可能会导致副作用。原型为 null 时，对象才真正是空的。
 
 

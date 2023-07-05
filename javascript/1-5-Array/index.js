@@ -9,6 +9,10 @@ let result = lengths.map(item => item.length)
 
 console.log(lengths, result);
 
+// slice // pick elements ，return subset from arr
+// splice array.splice(startIndex, delNumber, addA, addB) // 用于从数组中删除插入元素,return 删除的元素，origin arr被修改
+
+
 // sort
 lengths.sort( (a, b) => a - b );
 

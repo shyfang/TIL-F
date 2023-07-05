@@ -20,11 +20,11 @@ function loadImg() {
   img.src = 'https://js.cx/clipart/train.gif'
 
   img.onload = function () {
-    alert(`Image loaded, size ${img.width}x${img.height}`)
+    console.log(`Image loaded, size ${img.width}x${img.height}`)
   }
 
   img.onerror = function () {
-    alert('Error occurred while loading image')
+    console.log('Error occurred while loading image')
   }
 }
 
@@ -51,8 +51,8 @@ let promise1 = new Promise(function(resolve, reject) {
 
 // resolve 运行 .then 中的第一个函数
 promise1.then(
-  result => alert(result), // 1 秒后显示 "done!"
-  error => alert(error) // 不运行
+  result => console.log(result), // 1 秒后显示 "done!"
+  error => console.log(error) // 不运行
 );
 
 
@@ -94,17 +94,55 @@ const dataURLToImage = dataURL =>
   let promise3 = loadScript("https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js");
 
 promise3.then(
-  script => alert(`${script.src} is loaded!`),
-  error => alert(`Error: ${error.message}`)
+  script => console.log(`${script.src} is loaded!`),
+  error => console.log(`Error: ${error.message}`)
 );
 
-promise3.then(script => alert('Another handler...'));
+promise3.then(script => console.log('Another handler...'));
 
 
 
 // 3. Promise API
 // Promise.all
-// Promise.race
-// Promise.any
+// Promise.all :如果任意的 promise reject，则 Promise.all 整个将会 reject。当我们需要 所有 结果都成功时，它对这种“全有或全无”
+// Promise.allSettled: Promise.allSettled 等待所有的 promise 都被 settle，无论结果如何
+// Promise.any :只等待第一个 settled 的 promise 并获取其结果（或 error）。
+// Promise.race :Promise.any 只等待第一个 fulfilled 的 promise
 
 
+
+function loadScript(src, callback) {
+  let script = document.createElement('script')
+  script.src = src
+
+  // Error 优先回调（error-first callback)
+  // error-first callback:约定第一个参数为error保留；第二个及以后参数用于成功的结果
+  script.onload = () => callback(null, script)
+  script.onerror = () => callback(new Error(`Script load error for ${src}`))
+
+  document.head.append(script)
+}
+
+// Promisification: 将一个接受回调的函数转换为一个返回Promise的函数
+let loadScriptPromise =  function(src) {
+  return new Promise((resolve, reject) => {
+    loadScript(src, (err, script)=>{
+      if(err) {
+        reject(err)
+      } else {
+        resolve(src)
+      }
+    })
+  })
+}
+
+
+
+
+function promisify(f) {
+  return function(...args){
+    return new Promise((resolve, reject) => {
+      
+    })
+  }
+}
