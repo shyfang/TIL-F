@@ -69,23 +69,30 @@ interface NumberDictionary {
 
 // --------------------------------------------
 
-// 1. 属性继承 extends
+// 1. 接口继承 extends 得到更具体的类型
 interface Colorful {
   color: string;
 }
 interface Circle {
   radius: number;
 }
+// 继承多个类型
 interface ColorfulCircle extends Colorful, Circle { }
-// 2. 交叉类型
+
+
+// 2. 交叉类型& Intersection Types 用于合并已经存在的对象类型
 type ColorfulCircle1 = Colorful & Circle;
+
 // #接口继承与交叉类型区别（Interfaces vs Intersections）
+
+
+// // 交叉类型可以重写类型
 // 2.1 使用继承的方式，如果重写类型会导致编译错误，但交叉类型不会：
 // interface Colorful1 {
 //   color: string;
 // }
 // interface ColorfulSub1 extends Colorful1 {
-//   color: number
+//   color: number 
 // }
 
 // 交叉类型 重写类型 string & number 交集 -》 never
@@ -96,6 +103,8 @@ type ColorfulCircle1 = Colorful & Circle;
 //   color: number
 // } 
 
+
+
 // 泛型
 type OneOrNull<Type> = Type | null
 type OneOrMany<Type> = Type | Type[]
@@ -104,10 +113,11 @@ type OneOrManyOrNull1<Type> = OneOrMany<Type> | null
 type OneOrManyOrNullString = OneOrManyOrNull<string>
 type OneOrManyOrNullString1 = OneOrMany<string> | null
 
+
 // ---------------------------------------------------
 // Array
 // number[] string[] Array<string>
-// Map<K, V> Set<T> Promise<T>
+// Map<K, V> Set<T> Promise<T> // ???
 interface Array1<Type> {
   /**
    * Gets or sets the length of the array.
@@ -130,10 +140,16 @@ interface Array1<Type> {
 // ReadonlyArray<Type> 简写为 readonly Type[]
 
 
-// Tuples元祖类型是另外一种Array类型
+// 元祖类型
+// Tuples元祖类型是另外一种Array类型 明确知道数组包含多少个元素 每个位置元素类型
 type StringNumberBooleans = [string, number, ...boolean[]];
 type StringBooleansNumber = [string, ...boolean[], number];
 type BooleansStringNumber = [...boolean[], string, number];
+
+function readButtonInput(...args: [string, number, ...number[]]){}
+function readButtonInput1(name: string, version: number, ...input: number[]){}
+
+
 
 // 如果我们给一个数组字面量 const 断言，也会被推断为 readonly 元组类型。
 let point = [3, 4] as const;

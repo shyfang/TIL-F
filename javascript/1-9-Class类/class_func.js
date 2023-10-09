@@ -1,6 +1,13 @@
 // -----------------------------------------------静态属性和静态方法-------------------------------------------------------------------
 // static 静态方法被用于实现属于整个类的功能。它与具体的类实例无关。
 // !!!静态方法不适用于单个对象 静态方法可以在类上调用，而不是在单个对象上。
+class MyClass {
+  static property = '...';
+
+  static method() {
+    // ...
+  }
+}
 class Article {
   constructor(title, date) {
     this.title = title
@@ -24,16 +31,40 @@ class Article {
 // “extends” 语法会设置两个原型：
 // 在构造函数的 "prototype" 之间设置原型（为了获取实例方法）。
 // 在构造函数之间会设置原型（为了获取静态方法）
-class Animal{
 
+class Animal{
+  static planet = "Earth";
+
+  constructor(name, speed) {
+    this.speed = speed;
+    this.name = name;
+  }
+
+  run(speed = 0) {
+    this.speed += speed;
+    alert(`${this.name} runs with speed ${this.speed}.`);
+  }
+  static compare(animalA, animalB) {
+    return animalA.speed - animalB.speed;
+  }
 }
 class Rabbit extends Animal {
-
+  hide() {
+    alert(`${this.name} hides!`);
+  }
 }
 
+console.log("Animal", Object.getOwnPropertyNames(Animal),  Animal.length, Object.getOwnPropertyNames(Animal.prototype));
 console.log(Rabbit.__proto__ === Animal);
 console.log(Rabbit.prototype.__proto__ === Animal.prototype);
 
+// Rabbit 函数原型继承自 Animal 函数。
+// Rabbit.prototype 原型继承自 Animal.prototype。
+
+
+// 静态方法等同于直接给类本身赋值
+// MyClass.property = ...
+// MyClass.method = ...
 
 
 // -----------------------------------------------受保护的属性和方法-------------------------------------------------------------------

@@ -46,7 +46,7 @@ function Dog(name, age){
 }
 
 Dog.prototype = new Animal()
-// Dog.prototype.constructor = Dog
+Dog.prototype.constructor = Dog
 
 Dog.prototype.bark = function () {
   console.log( 'name:' + this.name +',year:' + this.age);

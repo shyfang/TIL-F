@@ -130,7 +130,7 @@ let loadScriptPromise =  function(src) {
       if(err) {
         reject(err)
       } else {
-        resolve(src)
+        resolve(script)
       }
     })
   })

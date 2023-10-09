@@ -27,12 +27,29 @@
   for...in
 
 - 空对象判断 isEmpty
+```javascript
+function isEmpty(obj) {
+  for (const key in object) {
+    return false
+  }
+  return true
+  // const keys = Object.keys(obj)
+  // return keys.length === 0 ? true : false
+}
+```
 
 # 拷贝
 ```javascript
   // Object.assign(dest, [src1, src2, src3...])
+  let user = { name: "John" };
+  let permissions1 = { canView: true };
+  let permissions2 = { canEdit: true };
+
+  // 将 permissions1 和 permissions2 中的所有属性都拷贝到 user 中
+  Object.assign(user, permissions1, permissions2);
+
 ```
-- 浅拷贝与合并: Object.assign {...spread} // 属性值均为原始类型
+- 浅拷贝与合并: Object.assign() {...spread} // 属性值均为原始类型
   变量存储的不是“对象的值”，而是一个对值的“引用”（内存地址）。因此，拷贝此类变量或将其作为函数参数传递时，所拷贝的是引用，而不是对象本身。
 - 深拷贝 原理
 - user.name 与 Object.defineProperty
@@ -78,7 +95,7 @@ function User(name) {
   funciton
 
 # ?. ?.() ?.[]
-
+如果可选链 ?. 前面的值为 undefined 或者 null，它会停止运算并返回 undefined
 obj?.prop —— 如果 obj 存在则返回 obj.prop，否则返回 undefined。
 obj?.[prop] —— 如果 obj 存在则返回 obj[prop]，否则返回 undefined。
 obj.method?.() —— 如果 obj.method 存在则调用 obj.method()，否则返回 undefined。

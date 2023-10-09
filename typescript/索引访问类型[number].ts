@@ -1,3 +1,6 @@
+// 使用 索引访问类型（indexed access type） 查找另外一个类型上的特定属性
+// 索引名是一个类型！！！
+
 // type Person = { age: number; name: string; alive: boolean };
 // type PersonAge = Person["age"];
 
@@ -26,7 +29,7 @@ type key = "age";
 type Age3 = Person[key];
 
 
-
+// 假设有这样一个业务场景，一个页面要用在不同的 APP 里，比如淘宝、天猫、支付宝，根据所在 APP 的不同，调用的底层 API 会不同，
 // 数组
 const APP = ['TaoBao', 'Tmall', 'Alipay'] as const; // 注意const 将数组变为readonly的元组类型
 type typeOfAPP = typeof APP; //typeof 获取APP的类型
