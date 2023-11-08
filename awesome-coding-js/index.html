@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 题目描述:JSON 格式的虚拟 Dom 怎么转换成真实 Dom
+    const virtualDom = {
+      tag: 'DIV',
+      attrs: {
+        id: 'app'
+      },
+      children: [
+        {
+          tag: 'SPAN',
+          children: [
+            { tag: 'A', children: [] }
+          ]
+        },
+        {
+          tag: 'SPAN',
+          children: [
+            { tag: 'A', children: [] },
+            {
+              tag: 'A', children: "link", attrs: {
+                href: "https://novadax.com"
+              }
+            }
+          ]
+        }
+      ]
+    }
+
+    // 
+    function _render(vnode) {
+      if (typeof vnode === "number") {
+        vnode = String(vnode);
+      }
+      // 字符串类型直接就是文本节点
+      if (typeof vnode === "string") {
+        return document.createTextNode(vnode);
+      }
+
+      // 深度优先遍历
+      const dom = document.createElement(vnode.tag)
+      // 属性
+      if (vnode.attrs) {
+        const attrsKeys = Object.keys(vnode.attrs)
+        attrsKeys.forEach(key => {
+          const val = vnode.attrs[key]
+          dom.setAttribute(key, val);
+        });
+      }
+
+      if (Array.isArray(vnode.children)) {
+        vnode.children.forEach((child) => {
+          const childNode = _render(child)
+          dom.appendChild(childNode)
+        });
+      } else {
+        const childNode = _render(vnode.children)
+        dom.appendChild(childNode)
+      }
+
+      return dom
+    }
+
+    const node = _render(virtualDom)
+    document.getElementsByTagName("body")[0].appendChild(node)
+    console.log(document.getElementsByTagName("body"));
+
+
+
+  function dom2Json(domtree) {
+    let obj = {};
+    obj.tag = domtree.tagName;
+    // obj.attrs = domtree.attrs
+    obj.children = [];
+    domtree.childNodes.forEach((child) => obj.children.push(dom2Json(child)));
+    return obj;
+  }
+
+  const res = dom2Json(document.getElementById("app"))
+  console.log(res);
+  </script>
+</body>
+
+</html>

@@ -1,10 +1,10 @@
-export function getType(obj){
-  let type  = typeof obj;
+export function getType(obj) {
+  let type = typeof obj;
   if (type !== "object") {    // 先进行typeof判断，如果是基础数据类型，直接返回
     return type;
   }
   // 对于typeof返回结果是object的，再进行如下的判断，正则返回结果
-  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, '$1'); 
+  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, '$1');
   // return Object.prototype.toString.call(obj).slice(8, -1); 
 }
 
@@ -14,52 +14,47 @@ export function getType(obj){
 // reduce
 // Genetator
 
-/** 防抖 节流 */
-// 防抖：防止抖动，单位时间内事件触发会被重置，避免事件被误触发多次
-// 重在清零 clearTimeout,【频繁触发时，计时器重新计时】比如等电梯，只要有一个人进来，就需要再等一会儿
-export function debounce(fn, time){
+/** 防抖 节流 ：定义、实现思路重点、使用场景、this绑定 arguments */
+// 定义：防抖函数用于限制函数的执行频率，在连续的调用【停止一段时间后】才【执行函数】。
+// 思路：防止抖动，单位时间内事件触发会被【重置】（timer），避免事件被误触发多次
+// 重点：重在清零 clearTimeout,【频繁触发时，计时器重新计时】比如等电梯，只要有一个人进来，就需要再等一会儿
+// 使用场景：窗口调整事件\ 输入框实时搜索\ 按钮点击事件
+export function debounce(fn, time) {
   let timer = null;
 
   // 频繁触发时，计时器重新计时
-  return function debounceHandler(){
-      let context = this,args = arguments;
-      if(timer != null){
-          clearTimeout(timer)
-      }
-      timer = setTimeout(()=>{
-          fn.apply(this, args)
-          timer = null;
-      },time)
-  }
-}
-
-function debounce1(fn, wait) {
-  let timer =  null
   return function debounceHandler() {
-    if(timer) {
+    let args = arguments;
+    if (timer != null) {
       clearTimeout(timer)
     }
-    if(!timer) {
-      timer = setTimeout(() => {
-        fn.apply()
-        timer = null
-      }, time);
-    }
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+      timer = null;
+    }, time)
   }
 }
 
+/**
+ * 节流的重点 节流函数用于限制函数的执行频率，在指定的时间间隔内只执行【一次】函数。
+ * @param {*} fn 
+ * @param {*} time 
+ * @returns 
+ */
+// 定义：节流函数用于限制函数的执行频率，在指定的时间间隔内只执行【一次】函数。
+// 使用场景: 页面滚动事件、鼠标移动事件
 export function throttle(fn, time = 300) {
   let timer = null;
 
   // 这里不用箭头函数的原因是为了能够使用调用这个函数的对象的this上下文
   return function throttleHandler(...args) {
-      if (timer === null) {
-          // 这里不用 fn(...args)的原因还是为了保证this，因为 fn(...args) 会被编译成 fn.apply(undefined, args);
-          fn.apply(this, args);
-          timer = setTimeout(() => {
-              timer = null;
-          }, time);
-      }
+    if (timer === null) {
+      // 这里不用 fn(...args)的原因还是为了保证this，因为 fn(...args) 会被编译成 fn.apply(undefined, args);
+      fn.apply(this, args);
+      timer = setTimeout(() => {
+        timer = null;
+      }, time);
+    }
   };
 }
 
@@ -68,11 +63,11 @@ export function throttle(fn, time = 300) {
 /** 比较 */
 export function compare(value1, value2) {
   if (value1 < value2) {
-      return -1;
+    return -1;
   } else if (value1 > value2) {
-      return 1;
+    return 1;
   } else {
-      return 0;
+    return 0;
   }
 }
 
@@ -148,7 +143,7 @@ let myObj = { foo: 3, bar: 7 };
 
 export function* iterEntries(obj) {
   let keys = Object.keys(obj);
-  for (let i=0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i++) {
     let key = keys[i];
     console.log(key, obj[key])
     yield [key, obj[key]];
@@ -224,10 +219,10 @@ function parseQueryString(url) {
 function parseUrl(url) {
   const reg = /([^?&#]+)=([^?&#]+)/g;
   return url.match(reg).reduce((pre, cur) => {
-      const [key, value] = cur.split(/=/);
-      return {
-          ...pre,
-          [key]: value,
-      };
+    const [key, value] = cur.split(/=/);
+    return {
+      ...pre,
+      [key]: value,
+    };
   }, {});
 }

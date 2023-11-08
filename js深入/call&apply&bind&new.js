@@ -129,11 +129,20 @@ console.log("bar_obj", obj);
 
 // ?new操作符
 function myNew1(){
+  // 创建一个空对象，并将其原型设置为构造函数的原型
   let obj = new Object()
   const Constructor =  [].shift.call(arguments)
   obj.__proto__ = Constructor.prototype
+
+  // 调用构造函数 将其上下文设置为新创建的对象
   const res = Constructor.apply(obj, arguments)
   return typeof res === "object" ? res : obj
+}
+
+function myNew2(constructor, ...args) {
+  // Object.create 以一个现有对象作为原型，创建一个新对象。
+  let obj = Object.create(constructor.prototype)
+
 }
 
 function Otaku (name, age) {
