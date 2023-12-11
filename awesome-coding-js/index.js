@@ -1,4 +1,5 @@
 // 1. compose 注意从右到左的顺序 reduceRight
+// 上一个函数的结果 作为下一个函数的入参
 function fn1(x) {
   return x + 1;
 }
@@ -12,22 +13,32 @@ function fn4(x) {
   return x + 4;
 }
 // const a = compose(fn1, fn2, fn3, fn4);
-
+// a(1) 
+// 1 + 4 + 3 + 2 + 1
+// 实现思路：返回一个函数; 函数的返回结果作为下一个函数的入参
 function compose(...fn) {
-  return function (x) {
-    return fn.reduceRight((result, current) => {
-      return current(result)
-    }, x)
+  const newFn = (x) => {
+    return fn.reduceRight((pre, cur) => cur(pre), x)
   }
+  return newFn
 }
 
+// function compose1(...fn) {
+//   return function (x) {
+//     return fn.reduceRight((result, current) => {
+//       return current(result)
+//     }, x)
+//   }
+// }
+
 const afunc = compose(fn1, fn2, fn3, fn4)
-// console.log( afunc(1));
+console.log(afunc(1));
 
 
 // 2. 题目描述:setInterval 用来实现循环定时调用 可能会存在一定的问题 能用 setTimeout 解决吗
-// 每次调用tick都执行一次回调任务
-// 通过设置新的tick定时,形成一个循环
+// https://zh.javascript.info/settimeout-setinterval
+// 实现一个定时器hook
+// 每次调用tick都执行一次回调任务;通过设置新的tick定时,形成一个循环
 function mysetInterval(callback, delay) {
   function tick() {
     callback()
@@ -57,12 +68,49 @@ mySetTimeout(() => {
 // window.requestAnimationFrame
 
 
+// setTimeout 0
+// 浏览器会将 setTimeout 或 setInterval 的五层或更多层嵌套调用（调用五次之后）的最小延时限制在 4ms。
+// node.js setImmediate
+
+// 微任务：https://zh.javascript.info/microtask-queue
+// 事件循环-微任务 宏任务：https://zh.javascript.info/event-loop
+// promise setTimeout 题目出发？
+
+setTimeout(function () {
+  console.log("1");
+}, 0);
+async function async1() {
+  console.log("2");
+  const data = await async2();
+  console.log("3");
+  return data;
+}
+async function async2() {
+  return new Promise((resolve) => {
+    console.log("4");
+    resolve("async2的结果");
+  }).then((data) => {
+    console.log("5");
+    return data;
+  });
+}
+async1().then((data) => {
+  console.log("6");
+  console.log(data);
+});
+new Promise(function (resolve) {
+  console.log("7");
+  //   resolve()
+}).then(function () {
+  console.log("8");
+});
+
+
+
 // 防抖 和 节流实现
 
-
-
 // 3. 发布订阅模式
-// 了解设计模式
+// 了解设计模式 eventbus
 class EventEmitter {
   constructor() {
     this.events = {}
@@ -109,6 +157,8 @@ eventItem.once("dbClick", handle1)
 eventItem.emit("click", 1, 2, 3)
 eventItem.emit("dbClick")
 eventItem.emit("dbClick")
+
+// 了解ES5 和 ES6 继承的区别
 // class 基本语法
 // 将 class 视为一种定义[constructor构造器]及其[原型方法.prototype.method]的语法糖
 
@@ -289,17 +339,17 @@ class LRUCache {
 // Promise相关
 // 手写promise
 // let promise = new Promise(function(resolve, reject) {
-  // executor（生产者代码，“歌手”）
+// executor（生产者代码，“歌手”）
 // });
-class _Promise{
-  constructor(fn){
-    this.status ="pending" // fullfilled rejected
+class _Promise {
+  constructor(fn) {
+    this.status = "pending" // fullfilled rejected
     this.value = ""
-    
+
 
   }
 
-  then(){
+  then() {
 
   }
 }
