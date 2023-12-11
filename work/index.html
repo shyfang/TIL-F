@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 
+    class 属性，您将在 JavaScript 中用来选择元素。
+    src 属性，用于引用页面首次加载时显示的占位图片。
+    data-src 和 data-srcset 属性是占位符属性，包含元素进入视口后要加载的图片的网址。
+   -->
+  <img class="lazy" src="placeholder-image.jpg" data-src="image-to-lazy-load-1x.jpg" data-srcset="image-to-lazy-load-2x.jpg 2x, image-to-lazy-load-1x.jpg 1x" alt="I'm an image!">
+</body>
+</html>

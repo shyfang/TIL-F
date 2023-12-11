@@ -30,6 +30,7 @@ const data = [3, 6, 2, 4, 6, 1]
 // --------------------------------------------------------------------------------------------
 // 每次循环选取一个最小的数字放到前面的有序序列中。
 // [3, 6, 2, 4, 1] 
+// [1, i-1] 有序 [i, n]无序
 function selectionSort(arr) {
   for (let i = 0; i < arr.length - 1; i++) {
     let minIndex = i
@@ -48,11 +49,12 @@ function selectionSort(arr) {
 
 
 // 插入排序
+// 构建有序序列 遍历有序序列并在相应位置插入
 function insertSort(arr) {
   for (let i = 0; i < arr.length; i++) {
     let target = i
-    for (let j = i-1; j >= 0; j--) {
-      if(arr[j] > arr[target]) {
+    for (let j = i - 1; j >= 0; j--) {
+      if (arr[j] > arr[target]) {
         [arr[j], arr[target]] = [arr[target], arr[j]]
         target = j
       } else {
@@ -66,20 +68,20 @@ function insertSort(arr) {
 
 // console.log(insertSort(data));
 
-// 
-function quickSort(arr){
-  if(arr.length < 2) {
+// 与基准比较 分为left\right两个数组 递归left/right两个数组
+function quickSort(arr) {
+  if (arr.length < 2) {
     return arr
   }
   const target = arr[0]
   const left = []
   const right = []
   for (let i = 1; i < arr.length; i++) {
-    if(arr[i] < target) {
+    if (arr[i] < target) {
       left.push(arr[i])
     } else {
       right.push(arr[i])
-    } 
+    }
   }
   return quickSort(left).concat([target], quickSort(right))
 }
@@ -87,15 +89,22 @@ function quickSort(arr){
 
 
 // 归并排序
+
 function mergeSort(arr) {
-  if(arr.length <= 1) {
+  if (arr.length < 2) {
     return arr
   }
-  const mid = Math.floor(arr.length/2)
+
+  // 分割：将数组从中点进行分割，分为左、右两个数组
+  const mid = Math.floor(arr.length / 2)
   const left = arr.slice(0, mid)
   const right = arr.slice(mid)
+
+  // 递归分割
   const sortedLeft = mergeSort(left)
   const sortedRight = mergeSort(right)
+
+  // 归并：左右两个数组已经有序
   return merge(sortedLeft, sortedRight)
 }
 
@@ -103,9 +112,9 @@ function merge(leftArr, rightArr) {
   let tmp = []
   let leftIndex = 0
   let rightIndex = 0
-  
-  while(leftIndex < leftArr.length && rightIndex < rightArr.length) {
-    if(leftArr[leftIndex] < rightArr[rightIndex]) {
+
+  while (leftIndex < leftArr.length && rightIndex < rightArr.length) {
+    if (leftArr[leftIndex] < rightArr[rightIndex]) {
       tmp.push(leftArr[leftIndex])
       leftIndex++
     } else {
@@ -115,12 +124,12 @@ function merge(leftArr, rightArr) {
   }
 
   // 左侧 空
-  while(leftIndex < leftArr.length) {
+  while (leftIndex < leftArr.length) {
     tmp.push(leftArr[leftIndex])
     leftIndex++
   }
   // 右侧 空
-  while(rightIndex < rightArr.length) {
+  while (rightIndex < rightArr.length) {
     tmp.push(rightArr[rightIndex])
     rightIndex++
   }
@@ -169,13 +178,13 @@ function compareFn(a, b) {
 }
 
 // 题目描述:有一组版本号如下['0.1.1', '2.3.3', '0.302.1', '4.2', '4.3.5', '4.3.4.5']。现在需要对其进行排序，排序的结果为 ['4.3.5','4.3.4.5','2.3.3','0.302.1','0.1.1']
-function versionCompare(a,b) {
+function versionCompare(a, b) {
   const aArr = a.split('.')
   const bArr = b.split('.')
-  for (let i  = 0; i  < Math.max(aArr.length, bArr.length); i ++) {
+  for (let i = 0; i < Math.max(aArr.length, bArr.length); i++) {
     const s1 = parseInt(aArr[i]) || 0
     const s2 = parseInt(bArr[i]) || 0
-    if(s1 !== s2) {
+    if (s1 !== s2) {
       return s2 - s1
     }
   }
