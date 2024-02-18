@@ -1,0 +1,3 @@
+var longestConsecutive = function(nums) {
+
+};
