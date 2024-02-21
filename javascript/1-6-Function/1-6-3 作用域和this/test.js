@@ -9,7 +9,7 @@
 
 // bindAll
 
-//partial functions
+// partial functions
 // let bound =  func.bind(context, [arg1], [arg2], ...)
 // 允许将上下文绑定为this 还可绑定函数的部分参数
 
