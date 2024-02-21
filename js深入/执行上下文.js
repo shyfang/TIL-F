@@ -144,8 +144,10 @@ function checkscope(){
 }
 checkscope();
 // 执行过程
-// 1. 创建checkscope.[[scope]] = [GlobalContext.VO]
-// 2. ECStack = [checkscopeContext, globalContext]
+// 1. checkscope 函数被创建，保存作用域链到 内部属性[[scope]]
+  // checkscope.[[scope]] = [GlobalContext.VO]
+// 2. 执行 checkscope 函数，创建 checkscope 函数执行上下文，checkscope 函数执行上下文被压入执行上下文栈
+  // ECStack = [checkscopeContext, globalContext]
 // 3.准备工作 复制函数[[scope]]属性创建作用域链
 // checkscopeContext = {
 //  Scope: checkscope.[[scope]] 

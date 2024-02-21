@@ -114,11 +114,52 @@ function factorial(n, total) {
 console.log(factorial(5, 1));
 // 使用尾递归优化求斐波那契数列
 
-function factorial2 (n, start = 1, total = 1) {
-  if(n <= 2){
-      return total
+function factorial2(n, start = 1, total = 1) {
+  if (n <= 2) {
+    return total
   }
-  return factorial2 (n -1, total, total + start)
+  return factorial2(n - 1, total, total + start)
 }
 
 console.log(factorial2(10, 1, 1));
+
+
+
+//es5的继承和es6 class有什么本质区别
+// http 缓存
+// 柯里化
+sum(1,2,3).valueOf()    // 6
+sum(2,3)(2).valueOf()  // 7
+sum(1)(2)(3)(4).valueOf() // 10
+sum(2)(4, 1)(2).valueOf() // 9
+
+// 执行顺序
+setTimeout(function () {
+  console.log("1");
+}, 0);
+async function async1() {
+  console.log("2");
+  const data = await async2();
+  console.log("3");
+  return data;
+}
+async function async2() {
+  return new Promise((resolve) => {
+    console.log("4");
+    resolve("async2的结果");
+  }).then((data) => {
+    console.log("5");
+    return data;
+  });
+}
+async1().then((data) => {
+  console.log("6");
+  console.log(data);
+});
+new Promise(function (resolve) {
+  console.log("7");
+  //   resolve()
+}).then(function () {
+  console.log("8");
+});
+
